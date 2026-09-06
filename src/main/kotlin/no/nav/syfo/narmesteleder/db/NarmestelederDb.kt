@@ -189,7 +189,6 @@ class NarmestelederDb(
                     }
 
                     preparedStatement.executeQuery().use { resultSet ->
-                        val resultSet = preparedStatement.executeQuery()
                         val nlBehov = mutableListOf<NarmestelederBehovEntity>()
                         while (resultSet.next()) {
                             nlBehov.add(resultSet.toNarmestelederBehovEntity())
