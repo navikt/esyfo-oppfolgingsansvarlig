@@ -101,7 +101,7 @@ class LeesahNLKafkaConsumer(
         if (toCommit.isNotEmpty()) kafkaConsumer.commitSync(toCommit)
 
         processed.clear()
-        logger.info("Commited offsets for partitions")
+        logger.info("Committed offsets for partitions")
     }
 
     override suspend fun stop() {

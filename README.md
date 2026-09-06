@@ -51,7 +51,7 @@ Tjenesten konsumerer Kafka-topics for å opprette og vedlikeholde data som bruke
 
 
 ## Diagrams
-An always up-to-date diagram can be views in the excellent service from [Flex Arkitektur](https://flex-arkitektur.nav.no/?apper=prod-gcp.team-esyfo.esyfo-narmesteleder).
+An always up-to-date diagram can be viewed in the excellent service from [Flex Arkitektur](https://flex-arkitektur.nav.no/?apper=prod-gcp.team-esyfo.esyfo-narmesteleder).
 ### C4 Container diagram
 ```mermaid
     C4Container

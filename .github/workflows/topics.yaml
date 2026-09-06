@@ -17,8 +17,8 @@ concurrency:
   group: deploy-topics-${{ github.ref }}
   cancel-in-progress: true
 env:
-  TOPIC_DEV_FILES: nais/topics/syfo-narmestelder-leesah-dev.yaml
-  TOPIC_PROD_FILES: nais/topics/syfo-narmestelder-leesah-prod.yaml
+  TOPIC_DEV_FILES: nais/topics/syfo-narmesteleder-leesah-dev.yaml
+  TOPIC_PROD_FILES: nais/topics/syfo-narmesteleder-leesah-prod.yaml
 jobs:
   deploy-topic-to-dev:
     name: Deploy topic to dev

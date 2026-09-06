@@ -15,7 +15,7 @@ info:
     The Maskinporten token must be issued to a SystemUser with
     scope `nav:syfo/narmesteleder/lps` and Altinn resource `nav_syfo_oppgi-narmesteleder`.
     
-    Several of the endpoints has a constraint that the employee has to have an active sick leave in order for the endpoint to be used successfully.
+    Several of the endpoints have a constraint that the employee has to have an active sick leave in order for the endpoint to be used successfully.
     An employee has an **active sick leave** when:
     - The sick leave has been verified by the employee
     - The employee has confirmed which employer the sick leave applies to and sent it to the employer
@@ -91,7 +91,7 @@ paths:
             Forbidden:
             Possible reasons for forbidden response include:
             * `MISSING_ORG_ACCESS`: The entity making the request does not have access to the specified organization.
-            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. EG: nav_syfo_oppgi-narmesteleder
+            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. For example: nav_syfo_oppgi-narmesteleder
           content:
             application/json:
               schema:
@@ -160,7 +160,7 @@ paths:
             Forbidden:
             Possible reasons for forbidden response include:
             * `MISSING_ORG_ACCESS`: The entity making the request does not have access to the specified organization.
-            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. EG: nav_syfo_oppgi-narmesteleder
+            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. For example: nav_syfo_oppgi-narmesteleder
           content:
             application/json:
               schema:
@@ -190,7 +190,7 @@ paths:
         as line manager again, and instead look for a different person to assign.
         
         Use cases for this endpoint:
-        - An LPS has a subscriptions to Dialogporten and receives notifications about new requirements for line manager.
+        - An LPS has a subscription to Dialogporten and receives notifications about new requirements for line manager.
         They are concerned that they occasionally miss notifications about new requirements and want to use this
         endpoint to regularly poll for new requirements to make sure they do not miss any.
         - An LPS does not have a subscription to Dialogporten but still wants to be able to retrieve requirements for line managers.
@@ -254,7 +254,7 @@ paths:
             Forbidden:
             Possible reasons for forbidden response include:
             * `MISSING_ORG_ACCESS`: The entity making the request does not have access to the specified organization.
-            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. EG: nav_syfo_oppgi-narmesteleder
+            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. For example: nav_syfo_oppgi-narmesteleder
           content:
             application/json:
               schema:
@@ -331,7 +331,7 @@ paths:
             Forbidden:
             Possible reasons for forbidden response include:
             * `MISSING_ORG_ACCESS`: The entity making the request does not have access to the specified organization.
-            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. EG: nav_syfo_oppgi-narmesteleder
+            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. For example: nav_syfo_oppgi-narmesteleder
           content:
             application/json:
               schema:
@@ -403,7 +403,7 @@ paths:
             Forbidden:
             Possible reasons for forbidden response include:
             * `MISSING_ORG_ACCESS`: The entity making the request does not have access to the specified organization.
-            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. EG: nav_syfo_oppgi-narmesteleder
+            * `MISSING_ALITINN_RESOURCE_ACCESS`: The entity making the request does not have access to the required Altinn resource. For example: nav_syfo_oppgi-narmesteleder
           content:
             application/json:
               schema:

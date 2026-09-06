@@ -249,7 +249,7 @@ class NarmestelederService(
                 newStatus = BehovStatus.BEHOV_EXPIRED,
             )
             totalUpdated += count
-            logger.info("Update $count in interation with setBehovStatusForSykmeldingWithTomBeforeAndStatus")
+            logger.info("Update $count in iteration with setBehovStatusForSykmeldingWithTomBeforeAndStatus")
             delay(UPDATE_EXPIRED_BEHOVS_DELAY_MS.milliseconds)
         }
         while (count > 0)

@@ -27,7 +27,7 @@ class EregClientTest :
 
         val eregPath = "/ereg/api/v2/organisasjon"
 
-        describe("Successfull responses from Ereg") {
+        describe("Successful responses from Ereg") {
             val organization = organisasjon()
             val mockEngine = getMockEngine(
                 path = "$eregPath/${organization.organisasjonsnummer}?inkluderHierarki=true",

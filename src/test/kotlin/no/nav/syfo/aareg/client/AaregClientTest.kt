@@ -26,7 +26,7 @@ class AaregClientTest :
         val arbeidstakerEnhet = DefaultOrganization
         val personIdent = "12345"
 
-        describe("Successfull responses from Aareg") {
+        describe("Successful responses from Aareg") {
             val fakeAaregClient = FakeAaregClient()
             fakeAaregClient.arbeidsForholdForIdent.put(personIdent, listOf(arbeidstakerEnhet.ID to arbeidstakerEnhet.ID))
             val arbeidsforhold = FakeAaregClient().getArbeidsforhold(personIdent)
