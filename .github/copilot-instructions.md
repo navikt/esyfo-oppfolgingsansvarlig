@@ -40,11 +40,11 @@ This is the repository for narmesteleder-api, a service that provides an API for
 
 **Defaults**: Planning/research/drafts → `.local-notes/`. Finalized docs → `docs/`. Task tracking → session state.
 
-## Keeping Repository Instructions in Sync
+## Repository Instructions
 
-Keep this file aligned with the repository's actual conventions, commands, and boundaries. Update it when the technology stack, build and test commands, authentication, database, messaging, or operational practices change.
+This file documents the repository's conventions, commands, and boundaries. Update it directly when the technology stack, build and test commands, authentication, database, messaging, or operational practices change.
 
-This file is maintained locally in this repository. Do not assume that removed `.github/` agents, skills, instructions, or synchronization workflows still exist.
+This file is maintained locally in this repository; it is not generated or synchronized from another repository. Do not assume that removed `.github/` agents, skills, instructions, or workflows still exist.
 
 
 ## Tech Stack
