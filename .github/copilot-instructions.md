@@ -40,19 +40,11 @@ This is the repository for narmesteleder-api, a service that provides an API for
 
 **Defaults**: Planning/research/drafts → `.local-notes/`. Finalized docs → `docs/`. Task tracking → session state.
 
-## Keeping Copilot Config in Sync
+## Keeping Repository Instructions in Sync
 
-When making changes that affect patterns described in `.github/` config files (instructions, prompts, skills), **suggest** updating — but do not update automatically.
+Keep this file aligned with the repository's actual conventions, commands, and boundaries. Update it when the technology stack, build and test commands, authentication, database, messaging, or operational practices change.
 
-Examples: upgrading frameworks, changing test patterns, adding auth mechanisms, changing DB access patterns, adding Kafka topics, modifying build tooling.
-
-**Check the file header first** to determine where changes belong:
-
-- **Managed files** (header: `<!-- Managed by esyfo-cli …-->`) — Do NOT edit locally. Changes will be overwritten by the next sync.
-  Format: *"This change affects patterns in `.github/instructions/<file>`, which is managed by esyfo-cli. The source should be updated in the esyfo-cli repo under `copilot-config/`."*
-
-- **Locally owned files** (no managed header) — Suggest updating the file directly in this repo.
-  Format: *"This change affects patterns in `.github/instructions/<file>` — want me to update it?"*
+This file is maintained locally in this repository. Do not assume that removed `.github/` agents, skills, instructions, or synchronization workflows still exist.
 
 
 ## Tech Stack
