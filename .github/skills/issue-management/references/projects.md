@@ -11,7 +11,7 @@ Web UI kan auto-knytte issue til prosjekt via `projects:` i issue-malen. Program
 3. Parse `owner` og prosjektnummer fra denne linjen
 4. Hvis linjen mangler: issue-malen i repoet har ikke en `projects:`-linje → hopp over hele prosjektflyten uten å feile
 
-Bruk malen i consumer-repoet, ikke hovmester-kilden. Sync kan ha strippet `projects:` helt bort.
+Bruk malen i målrepoet, ikke en sentral kildemal. Repository-oppsettet kan mangle `projects:` helt.
 
 ## Minimumssekvens for prosjekttilknytning
 

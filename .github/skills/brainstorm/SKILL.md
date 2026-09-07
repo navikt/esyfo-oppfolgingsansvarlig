@@ -82,7 +82,7 @@ Spør etter hver seksjon: "Ser dette riktig ut?"
 Når designet er godkjent:
 - Oppsummer avgjørelsene som ble tatt
 - List konkrete filer som vil endres
-- Overlever til Souschef (via Hovmester) for detaljert planlegging
+- Overlever til Nav-Pilot for detaljert planlegging, med integrert Grillmester for implementering og verifisering
 
 ## Prinsipper
 
