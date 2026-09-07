@@ -96,8 +96,7 @@ object NameValidator {
         val matchType = determineMatchType(
             nameToValidate = nameToValidate,
             pdlLastNames = pdlPerson.names.flatMap { pdlName ->
-                listOfNotNull(
-                    pdlName.etternavn,
+                listOf(pdlName.etternavn) + listOfNotNull(
                     pdlName.mellomnavn
                         ?.takeIf { it.isNotBlank() }
                         ?.let { "$it ${pdlName.etternavn}".normalizeName() },
