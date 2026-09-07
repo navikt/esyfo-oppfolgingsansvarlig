@@ -18,10 +18,15 @@ import no.nav.syfo.pdl.client.Navn
 
 class NameValidatorTest :
     DescribeSpec({
-        fun person(lastName: String, fnr: String): Person = Person(
+        fun person(
+            lastName: String,
+            fnr: String,
+            firstName: String = faker.name().firstName(),
+            middleName: String? = null,
+        ): Person = Person(
             name = Navn(
-                fornavn = faker.name().firstName(),
-                mellomnavn = null,
+                fornavn = firstName,
+                mellomnavn = middleName,
                 etternavn = lastName,
             ),
             nationalIdentificationNumber = PersonalIdentificationNumber(fnr),
@@ -379,6 +384,56 @@ class NameValidatorTest :
                     nameSource = NAME_SOURCE_SINGLE,
                     validationResult = "accepted",
                 ) shouldBeExactly before + 1.0
+            }
+
+            it("accepts a request lastName combining PDL mellomnavn and etternavn") {
+                val linemanager = linemanager().copy(lastName = "Førsteetternavn Sisteetternavn")
+                val employee = person(
+                    lastName = "Sisteetternavn",
+                    firstName = "Fornavn",
+                    middleName = "Førsteetternavn",
+                    fnr = linemanager.employeeIdentificationNumber.value,
+                )
+                val before = nameValidationCount(
+                    matchType = "exact",
+                    nameSource = NAME_SOURCE_SINGLE,
+                    validationResult = "accepted",
+                )
+
+                shouldNotThrow<ApiErrorException.BadRequestException> {
+                    NameValidator.validateEmployeeLastName(employee, linemanager)
+                }
+
+                nameValidationCount(
+                    matchType = "exact",
+                    nameSource = NAME_SOURCE_SINGLE,
+                    validationResult = "accepted",
+                ) shouldBeExactly before + 1.0
+            }
+
+            it("accepts a combined PDL mellomnavn and etternavn in parallel PDL names") {
+                val linemanager = linemanager().copy(lastName = "Førsteetternavn Sisteetternavn")
+                val employee = person(
+                    lastName = "Urelatert",
+                    fnr = linemanager.employeeIdentificationNumber.value,
+                ).copy(
+                    names = listOf(
+                        Navn(
+                            fornavn = "Fornavn",
+                            mellomnavn = null,
+                            etternavn = "Urelatert",
+                        ),
+                        Navn(
+                            fornavn = "Fornavn",
+                            mellomnavn = "Førsteetternavn",
+                            etternavn = "Sisteetternavn",
+                        ),
+                    ),
+                )
+
+                shouldNotThrow<ApiErrorException.BadRequestException> {
+                    NameValidator.validateEmployeeLastName(employee, linemanager)
+                }
             }
 
             it("accepts ö instead of ø") {

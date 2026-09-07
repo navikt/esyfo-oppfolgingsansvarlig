@@ -95,7 +95,13 @@ object NameValidator {
         val nameSource = if (pdlPerson.hasParallelNames) NAME_SOURCE_PARALLEL else NAME_SOURCE_SINGLE
         val matchType = determineMatchType(
             nameToValidate = nameToValidate,
-            pdlLastNames = pdlPerson.names.map { it.etternavn },
+            pdlLastNames = pdlPerson.names.flatMap { pdlName ->
+                listOf(pdlName.etternavn) + listOfNotNull(
+                    pdlName.mellomnavn
+                        ?.takeIf { it.isNotBlank() }
+                        ?.let { "$it ${pdlName.etternavn}".normalizeName() },
+                )
+            },
             nameSource = nameSource,
         )
         val isAccepted = matchType.isAccepted
