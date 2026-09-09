@@ -9,7 +9,10 @@ import no.nav.syfo.findAll
 import no.nav.syfo.sykmelding.db.SykmeldingDb
 import no.nav.syfo.sykmelding.kafka.SykmeldingRecord
 import no.nav.syfo.sykmelding.model.SykmeldingsperiodeAGDTO
+import java.time.Clock
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneOffset
 import java.util.UUID
 
 class SykmeldingServiceTest :
@@ -90,19 +93,23 @@ class SykmeldingServiceTest :
             }
 
             it("should insert sykmelding when period ended within one year") {
-                val today = LocalDate.now()
+                val fixedToday = LocalDate.parse("2026-03-01")
+                val serviceWithFixedClock = SykmeldingService(
+                    sykmeldingDb,
+                    Clock.fixed(Instant.parse("2026-03-01T10:00:00Z"), ZoneOffset.UTC),
+                )
                 val sykmeldingId = UUID.randomUUID()
                 val message = defaultSendtSykmeldingMessage(
                     sykmeldingId = sykmeldingId.toString(),
                     sykmeldingsperioder = listOf(
                         SykmeldingsperiodeAGDTO(
-                            fom = today.minusDays(20).minusYears(1),
-                            tom = today.minusYears(1)
+                            fom = fixedToday.minusDays(20).minusYears(1),
+                            tom = fixedToday.minusYears(1)
                         )
                     )
                 )
 
-                service.processBatch(
+                serviceWithFixedClock.processBatch(
                     listOf(
                         SykmeldingRecord(offset = 0, sykmeldingId = sykmeldingId, message = message)
                     )

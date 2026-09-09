@@ -7,9 +7,10 @@ import kotlinx.coroutines.launch
 import no.nav.syfo.altinn.dialogporten.task.SendDialogTask
 import no.nav.syfo.altinn.dialogporten.task.UpdateDialogTask
 import no.nav.syfo.application.environment.Environment
+import no.nav.syfo.application.environment.OtherEnvironmentProperties
 import no.nav.syfo.application.events.LeaderChange
 import no.nav.syfo.application.events.LeaderChangeEvent
-import no.nav.syfo.narmesteleder.task.BehovMaintenanceTask
+import no.nav.syfo.maintenance.MaintenanceTask
 import no.nav.syfo.person.task.PersonEnrichmentTask
 import no.nav.syfo.util.logger
 import org.koin.ktor.ext.inject
@@ -19,15 +20,9 @@ import kotlin.getValue
 fun Application.configureBackgroundTasks() {
     val logger = logger()
     val environment by inject<Environment>()
-    if (!environment.otherProperties.isDialogportenBackgroundTaskEnabled) {
-        logger.info("Integration with Dialogporten is not enabled. Skipping background tasks")
-        return
-    }
-    logger.info("Integration with Dialogporten is enabled. Configuring background tasks")
-
     val sendDialogTask by inject<SendDialogTask>()
     val updateDialogTask by inject<UpdateDialogTask>()
-    val behovMaintenanceTask by inject<BehovMaintenanceTask>()
+    val maintenanceTask by inject<MaintenanceTask>()
     val personEnrichmentTask by inject<PersonEnrichmentTask>()
 
     val taskJobs: MutableList<Job> = Collections.synchronizedList(mutableListOf())
@@ -39,16 +34,24 @@ fun Application.configureBackgroundTasks() {
 
                 taskJobs.lock { jobs ->
                     jobs.cancelAndClear()
-                    jobs += launch { sendDialogTask.runTask() }
-                    jobs += launch { updateDialogTask.runTask() }
-                    if (environment.otherProperties.maintenanceTaskEnabled) {
-                        logger.info("Maintenance task is enabled. Starting behovMaintenanceTask.")
-                        jobs += launch { behovMaintenanceTask.runTask() }
+                    val tasksToStart = backgroundTasksToStart(environment.otherProperties)
+                    if (BackgroundTask.SendDialog in tasksToStart) {
+                        jobs += launch { sendDialogTask.runTask() }
+                        jobs += launch { updateDialogTask.runTask() }
                     } else {
-                        logger.info("Maintenance task is NOT enabled. Skipping behovMaintenanceTask.")
+                        logger.info(
+                            "Integration with Dialogporten is not enabled. " +
+                                "Skipping Dialogporten background tasks",
+                        )
                     }
-                    if (environment.otherProperties.personEnrichmentTaskEnabled) {
+                    if (BackgroundTask.PersonEnrichment in tasksToStart) {
                         jobs += launch { personEnrichmentTask.runTask() }
+                    }
+                    if (BackgroundTask.Maintenance in tasksToStart) {
+                        logger.info("Maintenance task is enabled. Starting maintenanceTask.")
+                        jobs += launch { maintenanceTask.runTask() }
+                    } else {
+                        logger.info("Maintenance task is NOT enabled. Skipping maintenanceTask.")
                     }
                 }
             }
@@ -70,6 +73,24 @@ fun Application.configureBackgroundTasks() {
             jobs.cancelAndClear()
         }
     }
+}
+
+internal fun backgroundTasksToStart(properties: OtherEnvironmentProperties): Set<BackgroundTask> = buildSet {
+    if (properties.isDialogportenBackgroundTaskEnabled) {
+        add(BackgroundTask.SendDialog)
+        if (properties.personEnrichmentTaskEnabled) {
+            add(BackgroundTask.PersonEnrichment)
+        }
+    }
+    if (properties.maintenanceTaskEnabled) {
+        add(BackgroundTask.Maintenance)
+    }
+}
+
+internal enum class BackgroundTask {
+    SendDialog,
+    PersonEnrichment,
+    Maintenance,
 }
 
 private inline fun MutableList<Job>.lock(block: (MutableList<Job>) -> Unit) = synchronized(this) {
