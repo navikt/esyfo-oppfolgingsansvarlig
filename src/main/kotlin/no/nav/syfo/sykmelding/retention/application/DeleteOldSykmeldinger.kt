@@ -1,6 +1,6 @@
 package no.nav.syfo.sykmelding.retention.application
 
-import no.nav.syfo.sykmelding.retention.business.SykmeldingRetentionPolicy
+import no.nav.syfo.sykmelding.retention.domain.SykmeldingRetentionPolicy
 import no.nav.syfo.util.logger
 import java.time.Clock
 import java.time.LocalDate

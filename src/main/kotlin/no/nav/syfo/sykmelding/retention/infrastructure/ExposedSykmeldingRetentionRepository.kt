@@ -1,4 +1,4 @@
-package no.nav.syfo.sykmelding.retention.exposed
+package no.nav.syfo.sykmelding.retention.infrastructure
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -1,4 +1,4 @@
-package no.nav.syfo.sykmelding.retention.business
+package no.nav.syfo.sykmelding.retention.domain
 
 import java.time.LocalDate
 

@@ -84,7 +84,7 @@ import no.nav.syfo.sykmelding.kafka.SendtSykmeldingHandler
 import no.nav.syfo.sykmelding.retention.application.DeleteOldSykmeldinger
 import no.nav.syfo.sykmelding.retention.application.SykmeldingRetentionMetrics
 import no.nav.syfo.sykmelding.retention.application.SykmeldingRetentionRepository
-import no.nav.syfo.sykmelding.retention.exposed.ExposedSykmeldingRetentionRepository
+import no.nav.syfo.sykmelding.retention.infrastructure.ExposedSykmeldingRetentionRepository
 import no.nav.syfo.sykmelding.service.NarmestelederBruddService
 import no.nav.syfo.sykmelding.service.SykmeldingService
 import no.nav.syfo.texas.AltinnTokenProvider

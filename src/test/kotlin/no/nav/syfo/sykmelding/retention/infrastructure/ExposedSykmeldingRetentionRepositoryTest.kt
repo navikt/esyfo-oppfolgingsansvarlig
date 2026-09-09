@@ -1,4 +1,4 @@
-package no.nav.syfo.sykmelding.retention.exposed
+package no.nav.syfo.sykmelding.retention.infrastructure
 
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe

@@ -1,4 +1,4 @@
-package no.nav.syfo.sykmelding.retention.business
+package no.nav.syfo.sykmelding.retention.domain
 
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe

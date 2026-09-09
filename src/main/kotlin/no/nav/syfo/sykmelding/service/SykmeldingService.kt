@@ -5,7 +5,7 @@ import no.nav.syfo.sykmelding.db.SendtSykmeldingEntity
 import no.nav.syfo.sykmelding.kafka.SykmeldingRecord
 import no.nav.syfo.sykmelding.model.SendtSykmeldingKafkaMessage
 import no.nav.syfo.sykmelding.model.SykmeldingsperiodeAGDTO
-import no.nav.syfo.sykmelding.retention.business.SykmeldingRetentionPolicy
+import no.nav.syfo.sykmelding.retention.domain.SykmeldingRetentionPolicy
 import no.nav.syfo.util.logger
 import java.time.Clock
 import java.time.LocalDate
