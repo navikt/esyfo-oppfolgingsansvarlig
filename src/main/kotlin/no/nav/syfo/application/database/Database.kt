@@ -2,9 +2,8 @@ package no.nav.syfo.application.database
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.micrometer.prometheusmetrics.PrometheusConfig
-import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import no.nav.syfo.application.environment.getEnvVar
+import no.nav.syfo.application.metric.METRICS_REGISTRY
 import org.flywaydb.core.Flyway
 import org.flywaydb.core.api.MigrationState
 import org.flywaydb.database.postgresql.PostgreSQLConfigurationExtension
@@ -33,7 +32,7 @@ class Database(
             minimumIdle = 1
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-            metricRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+            metricRegistry = METRICS_REGISTRY
             validate()
         }
     )
