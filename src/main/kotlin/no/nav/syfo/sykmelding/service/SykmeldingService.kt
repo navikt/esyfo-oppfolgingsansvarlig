@@ -5,12 +5,15 @@ import no.nav.syfo.sykmelding.db.SendtSykmeldingEntity
 import no.nav.syfo.sykmelding.kafka.SykmeldingRecord
 import no.nav.syfo.sykmelding.model.SendtSykmeldingKafkaMessage
 import no.nav.syfo.sykmelding.model.SykmeldingsperiodeAGDTO
+import no.nav.syfo.sykmelding.retention.domain.SykmeldingRetentionPolicy
 import no.nav.syfo.util.logger
+import java.time.Clock
 import java.time.LocalDate
 import java.util.UUID
 
 class SykmeldingService(
     private val sykmeldingDb: ISykmeldingDb,
+    private val clock: Clock = Clock.systemDefaultZone(),
 ) {
     suspend fun processBatch(records: List<SykmeldingRecord>) {
         if (records.isEmpty()) return
@@ -71,7 +74,10 @@ class SykmeldingService(
 
     private fun latestPeriodIsWithinOneYear(
         sykmeldingsperiodeAGDTO: SykmeldingsperiodeAGDTO
-    ): Boolean = sykmeldingsperiodeAGDTO.tom >= LocalDate.now().minusYears(1)
+    ): Boolean = SykmeldingRetentionPolicy.shouldRetain(
+        tom = sykmeldingsperiodeAGDTO.tom,
+        today = LocalDate.now(clock),
+    )
 
     companion object {
         private val logger = logger()

@@ -39,6 +39,7 @@ import no.nav.syfo.dinesykmeldte.client.FakeDinesykmeldteClient
 import no.nav.syfo.ereg.EregService
 import no.nav.syfo.ereg.client.EregClient
 import no.nav.syfo.ereg.client.FakeEregClient
+import no.nav.syfo.maintenance.MaintenanceTask
 import no.nav.syfo.narmesteleder.api.v1.LinemanagerRequirementRESTHandler
 import no.nav.syfo.narmesteleder.db.INarmestelederDb
 import no.nav.syfo.narmesteleder.db.INarmestelederLookupDb
@@ -67,7 +68,6 @@ import no.nav.syfo.narmesteleder.service.NarmestelederService
 import no.nav.syfo.narmesteleder.service.ValidationService
 import no.nav.syfo.narmesteleder.service.validators.PrincipalAccessValidator
 import no.nav.syfo.narmesteleder.service.validators.SickLeaveValidator
-import no.nav.syfo.narmesteleder.task.BehovMaintenanceTask
 import no.nav.syfo.pdl.PdlService
 import no.nav.syfo.pdl.client.FakePdlClient
 import no.nav.syfo.pdl.client.PdlClient
@@ -81,6 +81,10 @@ import no.nav.syfo.sykmelding.exposed.ISendtSykmeldingNarmestelederBruddReposito
 import no.nav.syfo.sykmelding.exposed.SendtSykmeldingNarmestelederBruddRepository
 import no.nav.syfo.sykmelding.exposed.SendtSykmeldingRepository
 import no.nav.syfo.sykmelding.kafka.SendtSykmeldingHandler
+import no.nav.syfo.sykmelding.retention.application.DeleteOldSykmeldinger
+import no.nav.syfo.sykmelding.retention.application.SykmeldingRetentionMetrics
+import no.nav.syfo.sykmelding.retention.application.SykmeldingRetentionRepository
+import no.nav.syfo.sykmelding.retention.infrastructure.ExposedSykmeldingRetentionRepository
 import no.nav.syfo.sykmelding.service.NarmestelederBruddService
 import no.nav.syfo.sykmelding.service.SykmeldingService
 import no.nav.syfo.texas.AltinnTokenProvider
@@ -93,6 +97,7 @@ import org.koin.core.scope.Scope
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
+import java.time.Clock
 import kotlin.time.Duration
 import org.jetbrains.exposed.v1.jdbc.Database as ExposedDatabase
 
@@ -156,6 +161,9 @@ private fun databaseModule() = module {
     }
     single<ISendtSykmeldingNarmestelederBruddRepository> {
         SendtSykmeldingNarmestelederBruddRepository(get())
+    }
+    single<SykmeldingRetentionRepository> {
+        ExposedSykmeldingRetentionRepository(get())
     }
     single<ILinemanagerSearchRepository> {
         LinemanagerSearchRepository(get())
@@ -275,12 +283,15 @@ private fun valkeyModule() = module {
 }
 
 private fun servicesModule() = module {
+    single { Clock.systemDefaultZone() }
     single { AaregService(arbeidsforholdOversiktClient = get()) }
     single { DinesykmeldteService(dinesykmeldteClient = get()) }
     single<IDinesykmeldteService> {
         DinesykmeldteService(get())
     }
-    single { SykmeldingService(sykmeldingDb = get()) }
+    single { SykmeldingService(sykmeldingDb = get(), clock = get()) }
+    single { SykmeldingRetentionMetrics() }
+    single { DeleteOldSykmeldinger(repository = get(), clock = get(), metrics = get()) }
     single {
         NarmestelederService(
             nlDb = get(),
@@ -374,8 +385,9 @@ private fun servicesModule() = module {
 
 private fun tasksModule() = module {
     single {
-        BehovMaintenanceTask(
+        MaintenanceTask(
             narmestelederService = get(),
+            deleteOldSykmeldinger = get(),
             env = env().otherProperties
         )
     }
